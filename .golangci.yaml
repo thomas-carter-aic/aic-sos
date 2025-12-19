@@ -1,0 +1,158 @@
+# This file is the config file for [golangci-lint](https://golangci-lint.run/).
+# https://golangci-lint.run/usage/configuration/
+
+# All available settings of specific linters
+# https://github.com/golangci/golangci-lint/blob/master/pkg/config/linters_settings.go
+
+# Options for analysis running
+run:
+  # The default timeout is 5m.
+  # Increase if running in slower environments
+  timeout: 5m
+  
+  # Exclude tests from linting by default (except for specific rules)
+  tests: true
+  
+  # Modules to exclude
+  skip-dirs:
+    - vendor
+    - node_modules
+    - .git
+  
+  skip-dirs-use-default: false
+
+# All available linters: https://golangci-lint.run/usage/linters/
+linters:
+  enable-all: false
+  enable:
+    # Error checking
+    - errcheck          # Check for unchecked errors
+    - errname           # Check for error naming conventions
+    - errorlint         # Check for errors.Is/As usage
+    
+    # Code quality
+    - govet             # Vet examines Go source code and reports suspicious constructs
+    - gosimple          # Linter for Go source code that specializes in simplifying code
+    - ineffassign       # Detect when assignments to existing variables are not used
+    - staticcheck       # Go static checker from author of the Go language
+    - unused            # Check for unused constants, variables, functions and types
+    
+    # Style/Conventions
+    - gofmt             # Gofmt checks whether code was gofmt-ed
+    - goimports         # Goimports does everything that gofmt does + add/remove imports
+    - gocritic          # The most opinionated Go source code linter
+    - golint            # Golint differs from gofmt. Gofmt reformats Go source code
+    
+    # Complexity
+    - cyclop            # Check function and package cyclomatic complexity
+    - gocyclo           # Compute cyclomatic complexity of functions
+    
+    # Security
+    - gosec             # Go source code security scanner
+    
+    # Testing
+    - testpackage       # Makes you use a separate test package
+
+linters-settings:
+  # Cyclomatic complexity
+  cyclop:
+    max-complexity: 15
+    package-average: 10.0
+    skip-tests: true
+
+  gocyclo:
+    min-complexity: 15
+
+  # Code style rules
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - opinionated
+      - performance
+      - experimental
+    disabled-checks:
+      - hugeParam  # Disabled for proto messages which are typically large
+      - ifElseChain  # Allow if-else chains for clarity
+      - paramTypeCombine  # Allow combined params for clarity
+
+  # Import formatting
+  goimports:
+    local-prefixes: github.com/aic-sos
+
+  # Error name conventions
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  # Security scanner
+  gosec:
+    # To select which kind of security issues to run analyzer on
+    includes:
+      - G101 # Look for hardcoded credentials
+      - G102 # Bind to all network interfaces
+      - G103 # Audit the use of unsafe blocks
+      - G104 # Audit errors not being checked
+      - G105 # Math/big.Int.Exp function
+      - G106 # Regexp.FindAll
+      - G107 # Potential HTTP request made with variable url
+      - G108 # Profiling endpoint automatically exposed
+      - G109 # Potential Integer overflow
+      - G110 # Potential DoS from large SSH key
+      - G111 # Potential directory traversal
+      - G112 # Potential Slowloris Attack
+      - G113 # Usage of Rat.SetString in loop
+      - G114 # Use of net.Listen with 0.0.0.0
+      - G201 # SQL query construction
+      - G202 # SQL query construction
+      - G203 # Use of unescaped data in HTML templates
+      - G204 # Audit use of exec with variable
+      - G301 # Poor file permissions
+      - G302 # Poor file permissions
+      - G303 # Creation of temp file with predictable name
+      - G304 # File traversal when using filepath.Join
+      - G305 # File traversal when creating zip/tar archive
+      - G306 # Poor file permissions
+      - G307 # Poor file permissions on temp file
+      - G401 # SHA1 weak crypto
+      - G402 # TLS MinVersion too old
+      - G403 # Insecure random source
+      - G404 # Use of weak random number generator
+      - G501 # Import blacklist: crypto/md5
+      - G502 # Import blacklist: crypto/des
+      - G503 # Import blacklist: crypto/rc4
+      - G504 # Import blacklist: net/http/cgi
+      - G505 # Import blacklist: crypto/sha1
+      - G506 # Import blacklist: encoding/base64
+      - G507 # Import blacklist: encoding/hex
+      - G601 # Implicit memory aliasing in range statement
+    excludes:
+      - G112 # Potential Slowloris attack - not applicable for internal services
+
+# Output options
+output:
+  # Colored output
+  color: auto
+  
+  # Print files with issues
+  print-issued-lines: true
+  print-linter-name: true
+  uniq-by-line: true
+  sort-results: true
+
+# Severity configuration
+severity:
+  # Default severity for issues without explicit level
+  default-severity: error
+  
+  # Rules to raise severity
+  rules:
+    - linters:
+        - gosec
+      severity: error
+    - linters:
+        - errcheck
+      severity: error
+    - linters:
+        - govet
+      severity: error

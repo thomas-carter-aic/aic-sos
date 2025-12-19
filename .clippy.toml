@@ -1,0 +1,59 @@
+# Clippy lints configuration for AIC-SOS Rust services
+# https://doc.rust-lang.org/clippy/
+
+[build]
+# Set the minimum supported Rust version (MSRV)
+# Prevents using features not available in MSRV
+# Keep in sync with Cargo.toml rust-version
+msrv = "1.75"
+
+[warn]
+# All warn-level lints are enabled by default
+# Clippy pedantic group - stricter linting
+all = true
+pedantic = true
+
+# Additional strict lints
+absolute-paths-not-starting-with-crate = "warn"
+doc-markdown = "warn"
+missing-docs = "warn"
+missing-errors-doc = "warn"
+missing-panics-doc = "warn"
+unsafe-code = "warn"
+
+[allow]
+# Allow some patterns that are often False Positives or have good reasons
+
+# Type complexity is OK for some generic types
+# (don't warn if type is too complex)
+type_complexity = "allow"
+
+# Module name repetition is OK in some cases
+module_name_repetitions = "allow"
+
+# Multiple crates allowed (intentional module organization)
+multiple_crate_versions = "allow"
+
+# Allow wildcard imports in tests and main
+# https://github.com/rust-lang/rust-clippy/issues/1305
+wildcard_imports = "allow"
+
+# String formatting is OK for some contexts
+or_fun_call = "allow"
+
+[deny]
+# Deny these lints - must be fixed
+
+# Panics that could be avoided
+todo = "deny"
+unimplemented = "deny"
+panic = "deny"
+
+# Unsafe code must be documented
+undocumented-unsafe-blocks = "deny"
+
+# Security issues
+unsafe-derive-derive-deserialize = "deny"
+
+[package.execution-plane]
+# Execution plane specific config if needed
