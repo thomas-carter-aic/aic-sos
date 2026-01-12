@@ -52,9 +52,9 @@ We provide a **control plane** (governance, approvals, policy-as-code, inventory
 - Evidence export bundles (run/approval)
 - FinOps: metering + budgets/quotas + cost-per-ticket reporting
 - Observability (OTel everywhere; internal backend)
+- RAG / content indexing (RAG MVP)
 
 ### Explicitly out of scope (MVP)
-- RAG / content indexing (no RAG MVP)
 - Arbitrary customer code execution
 - iPaaS replacement or generic workflow engine replacement
 - SIEM replacement; IAM replacement; DLP replacement
